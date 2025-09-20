@@ -1,0 +1,8 @@
+env: prod # prod / local
+
+url-generator:
+  alphabet: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_"
+  length: 10
+
+storage:
+  type: postgres # postgres / inmemory
