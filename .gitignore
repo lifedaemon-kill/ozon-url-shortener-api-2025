@@ -1,1 +1,4 @@
 .idea
+.dependencies
+vendor.protogen
+bin
