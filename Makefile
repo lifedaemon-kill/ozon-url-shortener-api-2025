@@ -65,7 +65,7 @@ grpc-deps: vendor-deps .dependencies/protoc
 
 # ------- Proto compilation -------
 # Генерирование гошных имплементаций прото файлов
-generate: $(PROTO_FILES) ## Сгенерировать protobuf
+proto-generate: $(PROTO_FILES) ## Сгенерировать protobuf
 	mkdir -p $(OUT_PATH)
 	$(LOCAL_BIN)/bin/protoc --proto_path=api --proto_path=vendor.protogen \
 		--go_out=$(OUT_PATH) --go_opt=paths=source_relative --plugin protoc-gen-go="${GOBIN}/protoc-gen-go.exe" \

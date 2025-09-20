@@ -3,3 +3,29 @@ syntax = "proto3";
 package shortener;
 
 option go_package = "/pkg/shortener";
+
+import "validate/validate.proto";
+import "google/api/annotations.proto";
+
+service UrlShortener {
+  rpc WrapLink(OriginURL) returns (ShortURL) {
+    option(google.api.http) = {
+      post:"/api/generate"
+      body: "*"
+    };
+  }
+
+  rpc UnwrapLink(ShortURL) returns (OriginURL) {
+    option(google.api.http) = {
+      get:"/api/unwrap/{url}"
+    };
+  }
+}
+
+message OriginURL {
+  string url = 1  [(validate.rules).string = {uri: true}];
+}
+
+message ShortURL {
+  string url = 1  [(validate.rules).string = {uri: true}];
+}
