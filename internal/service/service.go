@@ -9,6 +9,7 @@ import (
 	"main/internal/repository"
 	"main/internal/repository/entities"
 	serviceEntities "main/internal/service/entities"
+	"main/pkg/cache"
 )
 
 type Service interface {
@@ -19,13 +20,15 @@ type Service interface {
 type UrlService struct {
 	generator generator.Generator
 	repo      repository.UrlRepository
+	cach      cache.Cache[string, string]
 	log       logger.Logger
 }
 
-func NewUrlService(urlGen generator.Generator, repo repository.UrlRepository, log logger.Logger) *UrlService {
+func NewUrlService(urlGen generator.Generator, repo repository.UrlRepository, cach cache.Cache[string, string], log logger.Logger) *UrlService {
 	return &UrlService{
 		repo:      repo,
 		generator: urlGen,
+		cach:      cach,
 		log:       log,
 	}
 }
@@ -58,11 +61,19 @@ func (s *UrlService) GenerateNewLink(ctx context.Context, req serviceEntities.Ge
 	}
 
 	s.log.Debugw("GenerateNewLink", "generatedUrl", generatedUrl)
+
+	s.cach.Set(generatedUrl.ShortenedUrl, req.OriginUrl)
+
 	return serviceEntities.GenerateLinkResponse{ShortenedUrl: s.generator.BaseHost() + generatedUrl.ShortenedUrl}, nil
 }
 
 func (s *UrlService) GetLink(ctx context.Context, req serviceEntities.GetLinkRequest) (serviceEntities.GetLinkResponse, error) {
 	s.log.Debugw("GetLink start", "ctx", ctx, "short url", req.ShortenedUrl)
+
+	origin, ok := s.cach.Get(req.ShortenedUrl)
+	if ok {
+		return serviceEntities.GetLinkResponse{OriginUrl: origin}, nil
+	}
 
 	link, err := s.repo.GetOriginURLFromShortened(ctx, entities.GetOriginURLFromShortenedUrlRequest{ShortenedUrl: req.ShortenedUrl})
 
@@ -76,5 +87,8 @@ func (s *UrlService) GetLink(ctx context.Context, req serviceEntities.GetLinkReq
 		}
 	}
 	s.log.Debugw("GetLink end", "ctx", ctx, "origin url", link)
+
+	s.cach.Set(req.ShortenedUrl, link.OriginUrl)
+
 	return serviceEntities.GetLinkResponse{OriginUrl: link.OriginUrl}, nil
 }

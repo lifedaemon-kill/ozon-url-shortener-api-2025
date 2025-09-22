@@ -1,4 +1,4 @@
-Запуск:
+# Запуск:
 
 потребуется .env файл
 ```
@@ -23,14 +23,26 @@ DB_SSLMODE=disable
 ```bash
   docker-compose up
 ```
+# cache
 
-gRPC 
+внедрена моя собственная библиотека инмемори кэширования, с таймаутами, вытеснением LFU по колличеству запросов
+
+на тестах повторные обращения работали значительно быстрее, примерно в 100 раз
+
+![img.png](.assets/img_cache.png)
+
+![img.png](.assets/img_cache2.png)
+
+![img.png](.assets/img_cache3.png)
+
+
+# gRPC 
 
 Благодаря Validate в опциях протобафа, можно легко проверять, что входной параметр это ссылка
 ![img.png](.assets/img14.png)
 ![img.png](.assets/img13.png)
 
-Swagger
+# Swagger
 
 ![img_2.png](.assets/img_2.png)
 
@@ -46,5 +58,5 @@ Swagger
 если такой ссылки нет, выйдет соответствующая ошибка
 ![img_1.png](.assets/img_1.png)
 
-Docker
+# Docker
 ![img.png](.assets/img12.png)

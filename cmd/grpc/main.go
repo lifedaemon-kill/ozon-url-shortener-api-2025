@@ -11,6 +11,7 @@ import (
 	"main/internal/repository/inmemory"
 	"main/internal/repository/postgres"
 	"main/internal/service"
+	"main/pkg/cache"
 	"main/pkg/db/migration"
 	desc "main/pkg/protogen/url-shortener"
 	"net"
@@ -49,7 +50,9 @@ func main() {
 	}
 
 	urlGenerator := generator.New(conf.UrlGenerator)
-	urlService := service.NewUrlService(urlGenerator, db, logSugar)
+	lfuCache := cache.NewLFUCache[string, string](60*time.Minute, 20)
+	defer lfuCache.Stop()
+	urlService := service.NewUrlService(urlGenerator, db, lfuCache, logSugar)
 
 	lis, err := net.Listen("tcp", "0.0.0.0:"+conf.Handler.Grpc.Port)
 	if err != nil {
