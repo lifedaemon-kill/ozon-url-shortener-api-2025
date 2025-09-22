@@ -3,6 +3,20 @@ env: prod # prod / local
 url-generator:
   alphabet: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_"
   length: 10
+  base-host: https://ozon.shortlink.ru/
 
 storage:
   type: postgres # postgres / inmemory
+
+handler:
+  grpc:
+    port: 9090
+  http-gw:
+    port: 8080
+  swagger:
+    port: 8090
+
+db:
+  migration-path: "migrations/"
+
+openapi-path: pkg/protogen/url-shortener/shortener.swagger.json

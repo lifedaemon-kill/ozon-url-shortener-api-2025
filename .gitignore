@@ -2,3 +2,4 @@
 .dependencies
 vendor.protogen
 bin
+.env

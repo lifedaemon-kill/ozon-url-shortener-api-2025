@@ -1,0 +1,78 @@
+services:
+  postgres:
+    container_name: pg
+    image: postgres:17.5
+    env_file: .env
+    restart: on-failure
+    ports:
+      - "$DB_PORT:$DB_PORT"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $POSTGRES_USER" ]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  grpc-api:
+    env_file: .env
+    build:
+      context: .
+      dockerfile: build/src/Dockerfile
+      target: grpc
+    ports:
+      - "9090:9090"
+    environment:
+      - CONFIG_PATH=config/config.yaml
+    restart: no
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - backend
+
+  gateway-http-api:
+    container_name: gateway-http-api
+    env_file: .env
+    build:
+      context: .
+      dockerfile: build/src/Dockerfile
+      target: gateway
+    ports:
+      - "8080:8080"
+    environment:
+      - CONFIG_PATH=config/config.yaml
+      - GIN_MODE=release
+    restart: always
+    healthcheck:
+      test: [ "CMD",  "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080" ]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
+    networks:
+      - backend
+
+  swagger:
+    container_name: swagger
+    env_file: .env
+    build:
+      context: .
+      dockerfile: build/src/Dockerfile
+      target: swagger
+    ports:
+      - "8090:8090"
+    environment:
+      - CONFIG_PATH=config/config.yaml
+
+    networks:
+      - backend
+    restart: always
+
+volumes:
+  pg_data:
+
+networks:
+  backend:

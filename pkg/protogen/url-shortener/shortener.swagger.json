@@ -1,13 +1,18 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "url-shortener/shortener.proto",
-    "version": "version not set"
+    "title": "Cокращения ссылок",
+    "version": "0.0.1",
+    "description": "gRPC / http приложение по сокращению ссылок"
   },
   "tags": [
     {
       "name": "UrlShortener"
     }
+  ],
+  "host": "localhost:8080",
+  "schemes": [
+    "http"
   ],
   "consumes": [
     "application/json"
