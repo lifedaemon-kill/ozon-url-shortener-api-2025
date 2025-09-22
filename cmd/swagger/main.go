@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 	"main/internal/config"
-	logger "main/internal/logger"
+	"main/internal/pkg/logger"
 	"net/http"
 	"os"
 	"os/signal"

@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"errors"
 	"main/internal/config"
-	"main/internal/errs"
+	"main/internal/pkg/errs"
 	"main/internal/repository/entities"
 
 	"github.com/jmoiron/sqlx"

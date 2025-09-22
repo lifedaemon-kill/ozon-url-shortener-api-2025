@@ -3,9 +3,9 @@ package service
 import (
 	"context"
 	"errors"
-	"main/internal/errs"
-	"main/internal/generator"
-	"main/internal/logger"
+	"main/internal/pkg/errs"
+	"main/internal/pkg/generator"
+	"main/internal/pkg/logger"
 	"main/internal/repository"
 	"main/internal/repository/entities"
 	serviceEntities "main/internal/service/entities"

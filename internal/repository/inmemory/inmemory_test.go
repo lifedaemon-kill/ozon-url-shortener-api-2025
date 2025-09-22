@@ -2,7 +2,7 @@ package inmemory
 
 import (
 	"context"
-	"main/internal/errs"
+	"main/internal/pkg/errs"
 	"main/internal/repository/entities"
 	"testing"
 

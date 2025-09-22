@@ -3,8 +3,8 @@ package grpc
 import (
 	"context"
 	"errors"
-	"main/internal/errs"
-	"main/internal/logger"
+	"main/internal/pkg/errs"
+	"main/internal/pkg/logger"
 	"main/internal/service"
 	"main/internal/service/entities"
 	desc "main/pkg/protogen/url-shortener"

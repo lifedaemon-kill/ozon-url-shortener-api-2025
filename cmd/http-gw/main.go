@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 	"main/internal/config"
-	"main/internal/logger"
+	"main/internal/pkg/logger"
 	desc "main/pkg/protogen/url-shortener"
 	"net/http"
 	"os"

@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
-	"main/internal/errs"
+	"main/internal/pkg/errs"
 
 	"github.com/ilyakaznacheev/cleanenv"
 )
