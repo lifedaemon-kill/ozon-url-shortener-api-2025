@@ -15,8 +15,16 @@ func New() *UrlRepository {
 }
 
 func (r *UrlRepository) AddUrlRelation(ctx context.Context, req entities.AddUrlRelationRequest) (entities.AddUrlRelationResponse, error) {
+	if _, exist := r.dict[req.ShortenedUrl]; exist {
+		return entities.AddUrlRelationResponse{}, errs.ErrorRepositoryDuplicate
+	}
+	for _, v := range r.dict {
+		if v == req.OriginUrl {
+			return entities.AddUrlRelationResponse{}, errs.ErrorAlreadyExist
+		}
+	}
 	r.dict[req.ShortenedUrl] = req.OriginUrl
-	return entities.AddUrlRelationResponse{req.ShortenedUrl}, nil
+	return entities.AddUrlRelationResponse{ShortenedUrl: req.ShortenedUrl}, nil
 }
 
 func (r *UrlRepository) GetOriginURLFromShortened(ctx context.Context, req entities.GetOriginURLFromShortenedUrlRequest) (entities.GetOriginURLFromShortenedUrlResponse, error) {

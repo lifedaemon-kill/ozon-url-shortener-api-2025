@@ -1,4 +1,32 @@
-gRPC Благодаря Validate в опциях протобафа, можно легко проверять, что входной параметр это ссылка
+Запуск:
+
+потребуется .env файл
+```
+DB_HOST=postgres
+DB_PORT=5432
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=secret
+POSTGRES_DB=ozon_db
+DB_SSLMODE=disable
+```
+
+далее установить зависимости:
+```bash
+  make grpc-deps
+```
+
+И запустить контейнеры
+```bash
+  make up
+```
+или
+```bash
+  docker-compose up
+```
+
+gRPC 
+
+Благодаря Validate в опциях протобафа, можно легко проверять, что входной параметр это ссылка
 ![img.png](.assets/img14.png)
 ![img.png](.assets/img13.png)
 

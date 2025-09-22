@@ -11,21 +11,21 @@ type Generator interface {
 	BaseHost() string
 }
 
-type UniqueSeqGenerator struct {
+type SeqGenerator struct {
 	baseHost string
 	alphabet string
 	length   int
 }
 
-func New(cfg config.UrlGenConfig) *UniqueSeqGenerator {
-	return &UniqueSeqGenerator{
+func New(cfg config.UrlGenConfig) *SeqGenerator {
+	return &SeqGenerator{
 		baseHost: cfg.BaseHost,
 		alphabet: cfg.Alphabet,
 		length:   cfg.Length,
 	}
 }
 
-func (g *UniqueSeqGenerator) Generate() string {
+func (g *SeqGenerator) Generate() string {
 	var builder strings.Builder
 	builder.Grow(g.length)
 
@@ -38,6 +38,6 @@ func (g *UniqueSeqGenerator) Generate() string {
 	return builder.String()
 }
 
-func (g *UniqueSeqGenerator) BaseHost() string {
+func (g *SeqGenerator) BaseHost() string {
 	return g.baseHost
 }

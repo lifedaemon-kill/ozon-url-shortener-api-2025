@@ -75,3 +75,7 @@ proto-generate: $(PROTO_FILES) ## Сгенерировать protobuf
 		--openapiv2_out=$(OUT_PATH) --plugin=protoc-gen-openapiv2="$(LOCAL_BIN)/protoc-gen-openapiv2.exe" \
 		api/*/*.proto
 	go mod tidy
+
+.PHONY: up
+up:
+	docker-compose up
