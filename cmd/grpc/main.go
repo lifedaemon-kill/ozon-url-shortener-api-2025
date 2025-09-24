@@ -7,7 +7,6 @@ import (
 	grpcHandler "main/internal/handler/grpc"
 	"main/internal/pkg/generator"
 	"main/internal/pkg/logger"
-	"main/internal/repository"
 	"main/internal/repository/inmemory"
 	"main/internal/repository/postgres"
 	"main/internal/service"
@@ -28,7 +27,7 @@ func main() {
 	logSugar := logger.New(conf.Env)
 
 	logSugar.Infow("HELLO", "CONFIG", conf)
-	var db repository.UrlRepository
+	var db service.UrlRepository
 
 	switch conf.Storage.Type {
 	case "postgres":

@@ -6,11 +6,6 @@ import (
 	"strings"
 )
 
-type Generator interface {
-	Generate() string
-	BaseHost() string
-}
-
 type SeqGenerator struct {
 	baseHost string
 	alphabet string

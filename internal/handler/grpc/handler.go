@@ -5,22 +5,27 @@ import (
 	"errors"
 	"main/internal/pkg/errs"
 	"main/internal/pkg/logger"
-	"main/internal/service"
 	"main/internal/service/entities"
+	serviceEntities "main/internal/service/entities"
 	desc "main/pkg/protogen/url-shortener"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
+type Service interface {
+	GenerateNewLink(context.Context, serviceEntities.GenerateLinkRequest) (serviceEntities.GenerateLinkResponse, error)
+	GetLink(context.Context, serviceEntities.GetLinkRequest) (serviceEntities.GetLinkResponse, error)
+}
+
 type Implementation struct {
 	desc.UnimplementedUrlShortenerServer
 
-	urlService service.Service
+	urlService Service
 	log        logger.Logger
 }
 
-func New(urlService service.Service, log logger.Logger) *Implementation {
+func New(urlService Service, log logger.Logger) *Implementation {
 	return &Implementation{urlService: urlService, log: log}
 }
 

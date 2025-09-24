@@ -4,27 +4,30 @@ import (
 	"context"
 	"errors"
 	"main/internal/pkg/errs"
-	"main/internal/pkg/generator"
 	"main/internal/pkg/logger"
-	"main/internal/repository"
 	"main/internal/repository/entities"
 	serviceEntities "main/internal/service/entities"
 	"main/pkg/cache"
 )
 
-type Service interface {
-	GenerateNewLink(context.Context, serviceEntities.GenerateLinkRequest) (serviceEntities.GenerateLinkResponse, error)
-	GetLink(context.Context, serviceEntities.GetLinkRequest) (serviceEntities.GetLinkResponse, error)
+type UrlRepository interface {
+	AddUrlRelation(ctx context.Context, req entities.AddUrlRelationRequest) (entities.AddUrlRelationResponse, error)
+	GetOriginURLFromShortened(ctx context.Context, req entities.GetOriginURLFromShortenedUrlRequest) (entities.GetOriginURLFromShortenedUrlResponse, error)
+	Close() error
 }
 
+type Generator interface {
+	Generate() string
+	BaseHost() string
+}
 type UrlService struct {
-	generator generator.Generator
-	repo      repository.UrlRepository
+	generator Generator
+	repo      UrlRepository
 	cach      cache.Cache[string, string]
 	log       logger.Logger
 }
 
-func NewUrlService(urlGen generator.Generator, repo repository.UrlRepository, cach cache.Cache[string, string], log logger.Logger) *UrlService {
+func NewUrlService(urlGen Generator, repo UrlRepository, cach cache.Cache[string, string], log logger.Logger) *UrlService {
 	return &UrlService{
 		repo:      repo,
 		generator: urlGen,
